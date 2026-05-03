@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Covide.Application.Converters;
+using Covide.Application.Interfaces;
+using Covide.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Covide.Web
 {
@@ -26,7 +23,15 @@ namespace Covide.Web
         {
             services.AddControllers();
 
-            services.AddEntityFrameworkSqlite().AddDbContext<CovideDataContext>();
+            services.AddDbContext<CovideDataContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IColorConversionService, ColorConversionService>();
+            services.AddScoped<IColorRepository, ColorRepository>();
+            services.AddScoped<IHslConverter, HslConverter>();
+            services.AddScoped<IHsvConverter, HsvConverter>();
+            services.AddScoped<IXyzConverter, XyzConverter>();
+            services.AddScoped<ICmykConverter, CmykConverter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

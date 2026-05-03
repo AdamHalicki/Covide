@@ -1,31 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Covide.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace Covide.Web
+namespace Covide.Infrastructure.Data
 {
-    public class ColorCode
-    {
-        public int Id { get; set; }
-        public string HexTriplet { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class CovideDataContext : DbContext
-    {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Filename=Data.db");
-        }
-
-        public DbSet<ColorCode> ColorCodes { get; set; }
-    }
-
     public static class CovideDataSeeder
     {
-        
-
         public static void Seed(IServiceProvider provider)
         {
             var db = provider.GetRequiredService<CovideDataContext>();
